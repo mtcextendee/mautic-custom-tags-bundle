@@ -1,0 +1,7 @@
+{
+  "name": "kuzmany/mautic-custom-tags-bundle",
+  "type": "mautic-plugin",
+  "require": {
+    "mautic/composer-plugin": "^1.0"
+  }
+}
