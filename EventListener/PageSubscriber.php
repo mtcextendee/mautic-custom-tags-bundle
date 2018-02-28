@@ -11,18 +11,16 @@
 
 namespace MauticPlugin\MauticCustomTagsBundle\EventListener;
 
-
-use Mautic\CampaignBundle\Entity\Lead;
 use Mautic\CoreBundle\EventListener\CommonSubscriber;
-use Mautic\EmailBundle\EmailEvents;
-use Mautic\EmailBundle\Event as Events;
-use Mautic\CoreBundle\Exception as MauticException;
+use Mautic\LeadBundle\Model\LeadModel;
+use Mautic\PageBundle\Event\PageDisplayEvent;
+use Mautic\PageBundle\PageEvents;
 use MauticPlugin\MauticCustomTagsBundle\Helper\TokenHelper;
 
 /**
- * Class EmailSubscriber.
+ * Class PageSubscriber.
  */
-class EmailSubscriber extends CommonSubscriber
+class PageSubscriber extends CommonSubscriber
 {
     /**
      * @var TokenHelper $tokenHelper ;
@@ -31,38 +29,44 @@ class EmailSubscriber extends CommonSubscriber
 
 
     /**
+     * @var LeadModel $leadModel
+     */
+    protected $leadModel;
+
+
+    /**
      * EmailSubscriber constructor.
      *
      * @param TokenHelper $tokenHelper
+     * @param LeadModel $leadModel
      */
-    public function __construct(TokenHelper $tokenHelper)
+    public function __construct(TokenHelper $tokenHelper, LeadModel $leadModel)
     {
         $this->tokenHelper = $tokenHelper;
+        $this->leadModel = $leadModel;
     }
 
     /**
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return [
-            EmailEvents::EMAIL_ON_SEND => ['onEmailGenerate', 0],
-            EmailEvents::EMAIL_ON_DISPLAY => ['onEmailGenerate', 0],
+            PageEvents::PAGE_ON_DISPLAY => ['onPageDisplay', 0],
         ];
     }
 
     /**
-     * Search and replace tokens with content
-     *
-     * @param EmailSendEvent $event
+     * @param PageDisplayEvent $event
      */
-    public function onEmailGenerate(Events\EmailSendEvent $event)
+    public function onPageDisplay(PageDisplayEvent $event)
     {
+
         $content = $event->getContent();
-        $content = $this->tokenHelper->findFormTokens($content,  $event->getLead());
+        $lead    = ($this->security->isAnonymous()) ? $this->leadModel->getCurrentLead() : null;
+        if($lead->getId()){
+            $content = $this->tokenHelper->findFormTokens($content,  $lead);
+        }
         $event->setContent($content);
     }
-
-
-
 }
