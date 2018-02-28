@@ -64,7 +64,7 @@ class PageSubscriber extends CommonSubscriber
 
         $content = $event->getContent();
         $lead    = ($this->security->isAnonymous()) ? $this->leadModel->getCurrentLead() : null;
-        if($lead->getId()){
+        if($lead && $lead->getId()){
             $content = $this->tokenHelper->findFormTokens($content,  $lead);
         }
         $event->setContent($content);
