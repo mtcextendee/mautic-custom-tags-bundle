@@ -24,7 +24,7 @@ The tag get content from your remote url.
 
 You can display remote content from external site in your email or page.
 
-`{base64=customtextareafield}`
+`{base64decode=customtextareafield}`
 
 The tag decode base64 encoded content from contacts custom textarea field. 
 
