@@ -11,29 +11,23 @@
 
 namespace MauticPlugin\MauticCustomTagsBundle\EventListener;
 
-
-use Mautic\CampaignBundle\Entity\Lead;
-use Mautic\CoreBundle\EventListener\CommonSubscriber;
 use Mautic\EmailBundle\EmailEvents;
 use Mautic\EmailBundle\Event as Events;
-use Mautic\CoreBundle\Exception as MauticException;
 use MauticPlugin\MauticCustomTagsBundle\Helper\TokenHelper;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Class EmailSubscriber.
  */
-class EmailSubscriber extends CommonSubscriber
+class EmailSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var TokenHelper $tokenHelper ;
+     * @var TokenHelper ;
      */
     protected $tokenHelper;
 
-
     /**
      * EmailSubscriber constructor.
-     *
-     * @param TokenHelper $tokenHelper
      */
     public function __construct(TokenHelper $tokenHelper)
     {
@@ -46,23 +40,20 @@ class EmailSubscriber extends CommonSubscriber
     public static function getSubscribedEvents()
     {
         return [
-            EmailEvents::EMAIL_ON_SEND => ['onEmailGenerate', 0],
+            EmailEvents::EMAIL_ON_SEND    => ['onEmailGenerate', 0],
             EmailEvents::EMAIL_ON_DISPLAY => ['onEmailGenerate', 0],
         ];
     }
 
     /**
-     * Search and replace tokens with content
+     * Search and replace tokens with content.
      *
      * @param EmailSendEvent $event
      */
     public function onEmailGenerate(Events\EmailSendEvent $event)
     {
         $content = $event->getContent();
-        $content = $this->tokenHelper->findFormTokens($content,  $event->getLead());
+        $content = $this->tokenHelper->findFormTokens($content, $event->getLead());
         $event->setContent($content);
     }
-
-
-
 }

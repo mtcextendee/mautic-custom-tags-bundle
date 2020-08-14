@@ -20,14 +20,12 @@ use Mautic\LeadBundle\Entity\Lead;
 class TokenHelper
 {
     /**
-     * @var Http $connector ;
+     * @var Http ;
      */
     protected $connector;
 
     /**
      * EmailSubscriber constructor.
-     *
-     * @param Http $connector
      */
     public function __construct(Http $connector)
     {
@@ -36,7 +34,8 @@ class TokenHelper
 
     /**
      * @param string $content
-     * @param mixed $lead
+     * @param mixed  $lead
+     *
      * @return string
      */
     public function findFormTokens($content, $lead)
@@ -44,7 +43,7 @@ class TokenHelper
         $tokens = [];
 
         // convert Lead entity to array
-        if($lead instanceof Lead){
+        if ($lead instanceof Lead) {
             $lead = $lead->getProfileFields();
         }
 
@@ -66,7 +65,6 @@ class TokenHelper
                 } catch (\Exception $e) {
                     $tokens[$token] = '';
                 }
-
             }
         }
         preg_match_all('/{base64decode=(.*?)}/', $content, $matches);
@@ -80,8 +78,7 @@ class TokenHelper
                 $tokens[$token] =  (!empty($lead[$id])) ? base64_decode($lead[$id]) : '';
             }
         }
-        $content = str_replace(array_keys($tokens), $tokens, $content);
 
-        return $content;
+        return str_replace(array_keys($tokens), $tokens, $content);
     }
 }

@@ -1,8 +1,6 @@
 # MauticCustomTags
 
-- Extensions family for Mautic https://mtcextendee.com/
-- Recommendations engine for Mautic https://mtcrecombee.com/
-- Support my work by <a href="https://www.paypal.me/kuzmany">PayPal</a> or host your Mautic on recommended affil host  <a href="https://www.vultr.com/?ref=7223705">Vultr</a>
+Custom tags for Mautic
 
 ## Installation
 

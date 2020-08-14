@@ -5,7 +5,7 @@ return [
     'description' => 'Custom tags for Mautic',
     'author'      => 'kuzmany.biz',
     'version'     => '1.0.0',
-    'services' => [
+    'services'    => [
         'events' => [
             'mautic.plugin.email.custom.tags.subscriber' => [
                 'class'     => \MauticPlugin\MauticCustomTagsBundle\EventListener\EmailSubscriber::class,
@@ -18,6 +18,7 @@ return [
                 'arguments' => [
                     'mautic.custom.tags.helper.token',
                     'mautic.lead.model.lead',
+                    'mautic.security',
                 ],
             ],
         ],
