@@ -63,7 +63,7 @@ class PageSubscriber implements EventSubscriberInterface
         $content = $event->getContent();
         $lead    = ($this->security->isAnonymous()) ? $this->leadModel->getCurrentLead() : null;
         if ($lead && $lead->getId()) {
-            $content = $this->tokenHelper->findFormTokens($content, $lead);
+            $content = $this->tokenHelper->findTokens($content, $lead);
         }
         $event->setContent($content);
     }

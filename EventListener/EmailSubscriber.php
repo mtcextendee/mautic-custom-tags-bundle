@@ -53,7 +53,7 @@ class EmailSubscriber implements EventSubscriberInterface
     public function onEmailGenerate(Events\EmailSendEvent $event)
     {
         $content = $event->getContent();
-        $content = $this->tokenHelper->findFormTokens($content, $event->getLead());
+        $content = $this->tokenHelper->findTokens($content, $event->getLead());
         $event->setContent($content);
     }
 }

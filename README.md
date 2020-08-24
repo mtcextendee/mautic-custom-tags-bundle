@@ -16,11 +16,19 @@ composer require kuzmany/mautic-custom-tags-bundle
 ![image](https://user-images.githubusercontent.com/462477/36776213-434e7196-1c65-11e8-87a7-326a478b0ba1.png)
 3. Then create email or page and you can use these tags:
 
+#### getremoteurl
+
 `{getremoteurl=http://yourremote.url}`
 
 The tag get content from your remote url. 
 
 You can display remote content from external site in your email or page.
+
+You are able to user contact field in url. Contact field use in format `[contactfield=alias]`. Your token will looks like:
+
+`{getremoteurl=http://yourremote.url?firstname=[contactfield=firstname]}`
+
+#### base64decode
 
 `{base64decode=customtextareafield}`
 

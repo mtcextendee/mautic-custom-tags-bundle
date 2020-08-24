@@ -13,6 +13,7 @@ namespace MauticPlugin\MauticCustomTagsBundle\Helper;
 
 use Joomla\Http\Http;
 use Mautic\LeadBundle\Entity\Lead;
+use Mautic\LeadBundle\Helper\PrimaryCompanyHelper;
 
 /**
  * Class TokenHelper.
@@ -25,11 +26,20 @@ class TokenHelper
     protected $connector;
 
     /**
-     * EmailSubscriber constructor.
+     * @var PrimaryCompanyHelper
      */
-    public function __construct(Http $connector)
+    private $primaryCompanyHelper;
+
+    /**
+     * EmailSubscriber constructor.
+     *
+     * @param Http                 $connector
+     * @param PrimaryCompanyHelper $primaryCompanyHelper
+     */
+    public function __construct(Http $connector, PrimaryCompanyHelper $primaryCompanyHelper)
     {
         $this->connector = $connector;
+        $this->primaryCompanyHelper = $primaryCompanyHelper;
     }
 
     /**
@@ -38,15 +48,14 @@ class TokenHelper
      *
      * @return string
      */
-    public function findFormTokens($content, $lead)
+    public function findTokens($content, $lead)
     {
         $tokens = [];
 
         // convert Lead entity to array
         if ($lead instanceof Lead) {
-            $lead = $lead->getProfileFields();
+            $lead = $this->primaryCompanyHelper->getProfileFieldsWithPrimaryCompany($lead);
         }
-
         preg_match_all('/{getremoteurl=(.*?)}/', $content, $matches);
         if (count($matches[0])) {
             foreach ($matches[1] as $k => $id) {
@@ -56,6 +65,8 @@ class TokenHelper
                     continue;
                 }
                 try {
+                    $token = str_replace(['[', ']'], ['{', '}'], $token);
+                    $token = \Mautic\LeadBundle\Helper\TokenHelper::findLeadTokens($token, $lead, true);
                     $data = $this->connector->get(
                         $id,
                         [],
