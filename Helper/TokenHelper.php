@@ -58,17 +58,16 @@ class TokenHelper
         }
         preg_match_all('/{getremoteurl=(.*?)}/', $content, $matches);
         if (count($matches[0])) {
-            foreach ($matches[1] as $k => $id) {
+            foreach ($matches[1] as $k => $url) {
                 $token = $matches[0][$k];
 
                 if (isset($tokens[$token])) {
                     continue;
                 }
                 try {
-                    $token = str_replace(['[', ']'], ['{', '}'], $token);
-                    $token = \Mautic\LeadBundle\Helper\TokenHelper::findLeadTokens($token, $lead, true);
+                    $url = \Mautic\LeadBundle\Helper\TokenHelper::findLeadTokens($url = str_replace(['[', ']'], ['{', '}'], $url), $lead, true);
                     $data = $this->connector->get(
-                        $id,
+                        $url,
                         [],
                         30
                     );
@@ -80,13 +79,13 @@ class TokenHelper
         }
         preg_match_all('/{base64decode=(.*?)}/', $content, $matches);
         if (count($matches[0])) {
-            foreach ($matches[1] as $k => $id) {
+            foreach ($matches[1] as $k => $url) {
                 $token = $matches[0][$k];
 
                 if (isset($tokens[$token])) {
                     continue;
                 }
-                $tokens[$token] =  (!empty($lead[$id])) ? base64_decode($lead[$id]) : '';
+                $tokens[$token] =  (!empty($lead[$url])) ? base64_decode($lead[$url]) : '';
             }
         }
 
