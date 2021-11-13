@@ -4,7 +4,7 @@ return [
     'name'        => 'Custom Tags',
     'description' => 'Custom tags for Mautic',
     'author'      => 'kuzmany.biz',
-    'version'     => '1.1.0',
+    'version'     => '1.3.0',
     'services'    => [
         'events' => [
             'mautic.plugin.email.custom.tags.subscriber' => [
