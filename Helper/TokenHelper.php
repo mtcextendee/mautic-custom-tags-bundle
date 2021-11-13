@@ -11,6 +11,7 @@
 
 namespace MauticPlugin\MauticCustomTagsBundle\Helper;
 
+use GuzzleHttp\Client;
 use Joomla\Http\Http;
 use Mautic\LeadBundle\Entity\Lead;
 use Mautic\LeadBundle\Helper\PrimaryCompanyHelper;
@@ -21,7 +22,7 @@ use Mautic\LeadBundle\Helper\PrimaryCompanyHelper;
 class TokenHelper
 {
     /**
-     * @var Http ;
+     * @var Client ;
      */
     protected $connector;
 
@@ -32,13 +33,10 @@ class TokenHelper
 
     /**
      * EmailSubscriber constructor.
-     *
-     * @param Http                 $connector
-     * @param PrimaryCompanyHelper $primaryCompanyHelper
      */
-    public function __construct(Http $connector, PrimaryCompanyHelper $primaryCompanyHelper)
+    public function __construct(Client $connector, PrimaryCompanyHelper $primaryCompanyHelper)
     {
-        $this->connector = $connector;
+        $this->connector            = $connector;
         $this->primaryCompanyHelper = $primaryCompanyHelper;
     }
 
@@ -65,14 +63,14 @@ class TokenHelper
                     continue;
                 }
                 try {
-                    $url = \Mautic\LeadBundle\Helper\TokenHelper::findLeadTokens($url = str_replace(['[', ']'], ['{', '}'], $url), $lead, true);
+                    $url  = \Mautic\LeadBundle\Helper\TokenHelper::findLeadTokens($url = str_replace(['[', ']'], ['{', '}'], $url), $lead, true);
                     $data = $this->connector->get(
                         $url,
-                        [],
-                        30
+                        []
                     );
-                    $tokens[$token] = $data->body;
+                    $tokens[$token] = $data->getBody()->getContents();
                 } catch (\Exception $e) {
+                    die(print_r($e->getMessage()));
                     $tokens[$token] = '';
                 }
             }
