@@ -27,7 +27,7 @@ return [
                 'class'     => \MauticPlugin\MauticCustomTagsBundle\Helper\TokenHelper::class,
                 'arguments' => [
                     'mautic.http.client',
-                    'mautic.lead.helper.primary_company'
+                    'mautic.lead.helper.primary_company',
                 ],
             ],
         ],

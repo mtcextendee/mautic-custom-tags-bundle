@@ -70,7 +70,6 @@ class TokenHelper
                     );
                     $tokens[$token] = $data->getBody()->getContents();
                 } catch (\Exception $e) {
-                    die(print_r($e->getMessage()));
                     $tokens[$token] = '';
                 }
             }
