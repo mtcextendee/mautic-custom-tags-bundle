@@ -1,5 +1,5 @@
 {
-  "name": "kuzmany/mautic-custom-tags-bundle",
+  "name": "mtcextendee/mautic-custom-tags-bundle",
   "description": "Custom tags for Mautic",
   "type": "mautic-plugin",
   "version": "1.3.0",
