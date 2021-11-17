@@ -24,9 +24,13 @@ The tag get content from your remote url.
 
 You can display remote content from external site in your email or page.
 
-You are able to user contact field in url. Contact field use in format `[contactfield=alias]`. Your token will looks like:
+You are able to use contact field in url. Contact field use in format `[contactfield=alias]`. Your token will looks like:
 
 `{getremoteurl=http://yourremote.url?firstname=[contactfield=firstname]}`
+
+You are able to use `|decode` modifier to urldecode URL. Your token will looks like
+
+`{getremoteurl=http://yourremote.url?test=1&test=1|decode}`
 
 #### base64decode
 

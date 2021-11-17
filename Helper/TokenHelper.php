@@ -63,8 +63,10 @@ class TokenHelper
                     continue;
                 }
                 try {
-                    $url  = \Mautic\LeadBundle\Helper\TokenHelper::findLeadTokens($url = str_replace(['[', ']'], ['{', '}'], $url), $lead, true);
-                    $data = $this->connector->get(
+                    $urlWithoutDecode    = str_replace(['|decode', '%7Cdecode'], '', $url);
+                    $url            = $urlWithoutDecode !== $url ?  urldecode($urlWithoutDecode) : $url;
+                    $url            = \Mautic\LeadBundle\Helper\TokenHelper::findLeadTokens($url = str_replace(['[', ']'], ['{', '}'], $url), $lead, true);
+                    $data           = $this->connector->get(
                         $url,
                         []
                     );
