@@ -12,7 +12,7 @@
 namespace MauticPlugin\MauticCustomTagsBundle\EventListener;
 
 use Mautic\CoreBundle\Security\Permissions\CorePermissions;
-use Mautic\LeadBundle\Model\LeadModel;
+use Mautic\LeadBundle\Tracker\ContactTracker;
 use Mautic\PageBundle\Event\PageDisplayEvent;
 use Mautic\PageBundle\PageEvents;
 use MauticPlugin\MauticCustomTagsBundle\Helper\TokenHelper;
@@ -28,10 +28,7 @@ class PageSubscriber implements EventSubscriberInterface
      */
     protected $tokenHelper;
 
-    /**
-     * @var LeadModel
-     */
-    protected $leadModel;
+    private ContactTracker $contactTracker;
 
     /**
      * @var CorePermissions
@@ -41,11 +38,11 @@ class PageSubscriber implements EventSubscriberInterface
     /**
      * EmailSubscriber constructor.
      */
-    public function __construct(TokenHelper $tokenHelper, LeadModel $leadModel, CorePermissions $security)
+    public function __construct(TokenHelper $tokenHelper, ContactTracker $contactTracker, CorePermissions $security)
     {
         $this->tokenHelper = $tokenHelper;
-        $this->leadModel   = $leadModel;
         $this->security    = $security;
+        $this->contactTracker = $contactTracker;
     }
 
     /**
@@ -61,7 +58,7 @@ class PageSubscriber implements EventSubscriberInterface
     public function onPageDisplay(PageDisplayEvent $event)
     {
         $content = $event->getContent();
-        $lead    = ($this->security->isAnonymous()) ? $this->leadModel->getCurrentLead() : null;
+        $lead    = ($this->security->isAnonymous()) ? $this->contactTracker->getContact() : null;
         if ($lead && $lead->getId()) {
             $content = $this->tokenHelper->findTokens($content, $lead);
         }

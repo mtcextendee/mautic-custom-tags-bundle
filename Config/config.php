@@ -17,7 +17,7 @@ return [
                 'class'     => \MauticPlugin\MauticCustomTagsBundle\EventListener\PageSubscriber::class,
                 'arguments' => [
                     'mautic.custom.tags.helper.token',
-                    'mautic.lead.model.lead',
+                    'mautic.tracker.contact',
                     'mautic.security',
                 ],
             ],
