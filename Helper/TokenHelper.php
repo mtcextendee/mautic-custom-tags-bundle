@@ -63,14 +63,15 @@ class TokenHelper
                     continue;
                 }
                 try {
-                    $urlWithoutDecode    = str_replace(['|decode', '%7Cdecode'], '', $url);
-                    $url            = $urlWithoutDecode !== $url ?  urldecode($urlWithoutDecode) : $url;
-                    $url            = \Mautic\LeadBundle\Helper\TokenHelper::findLeadTokens($url = str_replace(['[', ']'], ['{', '}'], $url), $lead, true);
-                    $data           = $this->connector->get(
+                    $urlWithoutDecode             = str_replace(['|decode', '%7Cdecode'], '', $url);
+                    $isDecodeToken                = $urlWithoutDecode !== $url;
+                    $url                          = $isDecodeToken ? htmlspecialchars_decode($urlWithoutDecode) : $url;
+                    $url                          = \Mautic\LeadBundle\Helper\TokenHelper::findLeadTokens($url = str_replace(['[', ']'], ['{', '}'], $url), $lead, true);
+                    $data                         = $this->connector->get(
                         $url,
                         []
                     );
-                    $tokens[$token] = $data->getBody()->getContents();
+                    $tokens[$token]   = $data->getBody()->getContents();
                 } catch (\Exception $e) {
                     $tokens[$token] = '';
                 }
