@@ -65,7 +65,7 @@ class TokenHelper
                 try {
                     $urlWithoutDecode             = str_replace(['|decode', '%7Cdecode'], '', $url);
                     $isDecodeToken                = $urlWithoutDecode !== $url;
-                    $url                          = $isDecodeToken ? htmlspecialchars_decode($urlWithoutDecode) : $url;
+                    $url                          = $isDecodeToken ? htmlspecialchars_decode(urldecode($urlWithoutDecode)) : $url;
                     $url                          = \Mautic\LeadBundle\Helper\TokenHelper::findLeadTokens($url = str_replace(['[', ']'], ['{', '}'], $url), $lead, true);
                     $data                         = $this->connector->get(
                         $url,
